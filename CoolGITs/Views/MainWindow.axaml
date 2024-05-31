@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:CoolGITs.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:CoolGITs.Views"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="CoolGITs.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="CoolGITs">
+	<StackPanel>
+		<Grid ColumnDefinitions="60*,60*,60*,60*,60*,60*,60*" HorizontalAlignment="Center" Grid.Row="0"  RowDefinitions="Auto"  Margin="4">
+			<Border  Width="60" Height="60" Grid.Column="0"/>
+			<Image Name="BlueColor" Width="60" Height="60" Grid.Column="0"/>
+			<Image Name="RedColor" Width="60" Height="60" Grid.Column="1"/>
+			<Image Name="GreenColor" Width="60" Height="60" Grid.Column="2"/>
+			<Image Name="BlackColor" Width="60" Height="60" Grid.Column="3"/>
+			<Image Name="WhiteColor" Width="60" Height="60" Grid.Column="4"/>
+			<Image Name="PurpleColor" Width="60" Height="60" Grid.Column="5"/>
+			<Image Name="BrownColor"  Width="60" Height="60" Grid.Column="6"/>
+		</Grid>
+		<Grid ColumnDefinitions="1*,1*,400,1*,1*" RowDefinitions="Auto,Auto,Auto"  Margin="4">
+			<Button Click="ChangeStateOfTheGame" Content="Stop the game!" HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="2"/>
+			<Image Name="MyImage" Width="400" Height="400" Grid.Row="2" Grid.Column="2"/>
+		</Grid>
+	</StackPanel>
+</Window>
