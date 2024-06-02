@@ -35,14 +35,21 @@ public partial class MainWindow : Window
         {
             for (int j = 0; j < rows; j++)
             {
-                int liveNeighbors = CountLiveNeighbors(i, j, rows, cols);
-
-                newRectObj[j, i] = new RectangleObject
+                if (_rectObj[j, i].ColorInHexa == 0xFFFFFFFF || _rectObj[j, i].ColorInHexa == 0xFF0000FF)
                 {
-                    Position = _rectObj[j, i].Position,
-                    Size = _rectObj[j, i].Size,
-                    ColorInHexa = DetermineNextState(_rectObj[j, i].ColorInHexa, liveNeighbors)
-                };
+                    int liveNeighbors = CountLiveNeighbors(i, j, rows, cols);
+
+                    newRectObj[j, i] = new RectangleObject
+                    {
+                        Position = _rectObj[j, i].Position,
+                        Size = _rectObj[j, i].Size,
+                        ColorInHexa = DetermineNextState(_rectObj[j, i].ColorInHexa, liveNeighbors)
+                    };
+                }
+                else
+                {
+                    newRectObj[j, i] = _rectObj[j, i];
+                }
             }
         }
 
@@ -60,7 +67,7 @@ public partial class MainWindow : Window
             {
                 if (IsInBounds(ii, jj, rows, cols) && !(ii == x && jj == y))
                 {
-                    if (_rectObj[jj, ii].ColorInHexa != 0xFFFFFFFF)
+                    if (_rectObj[jj, ii].ColorInHexa == 0xFF0000FF || _rectObj[jj, ii].ColorInHexa == 0xFFFF0000)
                     {
                         liveNeighbors++;
                     }
