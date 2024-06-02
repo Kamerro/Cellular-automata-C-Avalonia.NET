@@ -1,4 +1,4 @@
-Cellular automata written with Avalonia.NET \n
+Cellular automata written with Avalonia.NET \r\n
 The colours have different properties. Not every color is the cell.
 Blue and Red colors are the Cell types. Blue normally behaving, but red cell is forever alive.
 White color setting board tile to initial state, green one is like a blank space.
