@@ -55,42 +55,43 @@
 			<Border Classes ="Images"
 						BorderBrush="Green"
 						Grid.Column="2">
-				<Image Name="GreenColor"  Classes="TypeOfTheCells"/>
+				<Image Name="GreenColor"  Classes="TypeOfTheCells" ToolTip.Tip="Put the blank space."/>
 			</Border>
 
 			<Border Classes="Images"
 						BorderBrush="White"
 						Grid.Column="3">
-				<Image Name="BlackColor"  Classes="TypeOfTheCells"/>
+				<Image Name="BlackColor"  Classes="TypeOfTheCells" ToolTip.Tip="Not implemented behavior"/>
 			</Border>
 
 			<Border Classes="Images"
 						BorderBrush="Black"
 						Grid.Column="4">
-				<Image Name="WhiteColor"  Classes="TypeOfTheCells"/>
+				<Image Name="WhiteColor"  Classes="TypeOfTheCells" ToolTip.Tip="Remove cell or blank space"/>
 			</Border>
 
 			<Border Classes="Images"
 						BorderBrush="Purple"
 						Grid.Column="5">
-				<Image Name="PurpleColor"  Classes="TypeOfTheCells"/>
+				<Image Name="PurpleColor"  Classes="TypeOfTheCells" ToolTip.Tip="Not implemented behavior."/>
 			</Border>
 
 			<Border Classes ="Images"
 						BorderBrush="Red"
 						Grid.Column="6">
-				<Image Name="BrownColor"   Classes="TypeOfTheCells"/>
+				<Image Name="BrownColor"   Classes="TypeOfTheCells" ToolTip.Tip="Not implemented behavior."/>
 			</Border>
+			
 		</Grid>
 		
 		<Grid ColumnDefinitions="1*,1*,Auto,1*,1*" RowDefinitions="Auto,Auto,Auto">
 			<Border Classes="Images"
 						BorderBrush="Green"
-						Grid.Row="2" Grid.Column="2">
+						Grid.Row="0" Grid.Column="2">
 				<Image Name="MyImage" Width="400" Height="400"/>
 			</Border>
+			<Button Click="ClearMap" Content="Clear the map." HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="2"/>
 
-			<Button Click="ChangeStateOfTheGame" Content="Stop the game!" HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="2"/>
 		</Grid>
 		
 	</StackPanel>

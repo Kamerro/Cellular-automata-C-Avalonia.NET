@@ -30,31 +30,33 @@ public partial class MainWindow : Window
         int rows = _rectObj.GetLength(0);
         int cols = _rectObj.GetLength(1);
         RectangleObject[,] newRectObj = new RectangleObject[cols, rows];
-
-        for (int i = 0; i < cols; i++)
+        if ((DateTime.Now - Consts.DateOfLastClick).Seconds >=2)
         {
-            for (int j = 0; j < rows; j++)
+            for (int i = 0; i < cols; i++)
             {
-                if (_rectObj[j, i].ColorInHexa == 0xFFFFFFFF || _rectObj[j, i].ColorInHexa == 0xFF0000FF)
+                for (int j = 0; j < rows; j++)
                 {
-                    int liveNeighbors = CountLiveNeighbors(i, j, rows, cols);
-
-                    newRectObj[j, i] = new RectangleObject
+                    if (_rectObj[j, i].ColorInHexa == 0xFFFFFFFF || _rectObj[j, i].ColorInHexa == 0xFF0000FF)
                     {
-                        Position = _rectObj[j, i].Position,
-                        Size = _rectObj[j, i].Size,
-                        ColorInHexa = DetermineNextState(_rectObj[j, i].ColorInHexa, liveNeighbors)
-                    };
-                }
-                else
-                {
-                    newRectObj[j, i] = _rectObj[j, i];
+                        int liveNeighbors = CountLiveNeighbors(i, j, rows, cols);
+
+                        newRectObj[j, i] = new RectangleObject
+                        {
+                            Position = _rectObj[j, i].Position,
+                            Size = _rectObj[j, i].Size,
+                            ColorInHexa = DetermineNextState(_rectObj[j, i].ColorInHexa, liveNeighbors)
+                        };
+                    }
+                    else
+                    {
+                        newRectObj[j, i] = _rectObj[j, i];
+                    }
                 }
             }
-        }
 
-        _rectObj = newRectObj;
-        DisplayMap();
+            _rectObj = newRectObj;
+            DisplayMap();
+        }
     }
 
     private int CountLiveNeighbors(int x, int y, int rows, int cols)
@@ -123,7 +125,7 @@ public partial class MainWindow : Window
 
         _ic.ColorTheImage(BlueColor, 0xFF0000FF);
         _ic.ColorTheImage(RedColor, 0xFFFF0000);
-        _ic.ColorTheImage(GreenColor, 0xFF00FF00);
+        _ic.ColorTheImage(GreenColor, 0xFF008000);
         _ic.ColorTheImage(BlackColor, 0xFF000000);
         _ic.ColorTheImage(WhiteColor, 0xFFFFFFFF);
         _ic.ColorTheImage(PurpleColor, 0xFFA020F0);
@@ -133,6 +135,7 @@ public partial class MainWindow : Window
     private void AddMethodsToPointerPressedEvent()
     {
         MyImage.PointerPressed += ChangeParamaterOfRectangle;
+        MyImage.PointerPressed += SaveTimeToConsts;
         BlueColor.PointerPressed += ChangeColorsEventHandlers.changeColorOfClickingBlue;
         RedColor.PointerPressed += ChangeColorsEventHandlers.changeColorOfCLickingRed;
         GreenColor.PointerPressed += ChangeColorsEventHandlers.changeColorOfCLickingGreen;
@@ -142,23 +145,18 @@ public partial class MainWindow : Window
         BrownColor.PointerPressed += ChangeColorsEventHandlers.changeColorOfCLickingBrown;
     }
 
-    private void ChangeStateOfTheGame(object sender, RoutedEventArgs args)
+    private void SaveTimeToConsts(object? sender, PointerPressedEventArgs e)
     {
-        
-        var obj = sender as Button;
-        if(Consts.StateOfTheGame == StateOfTheGame.Normal)
-        {
-            Consts.StateOfTheGame = StateOfTheGame.Freezed;
-            obj.Content = "Start the game!";
-            _dt.Stop();
-        }
-        else
-        {
-            Consts.StateOfTheGame = StateOfTheGame.Normal;
-            obj.Content = "Stop the game!";
-            _dt.Start();
+        Consts.DateOfLastClick = DateTime.Now;
+    }
 
+    private void ClearMap(object sender, RoutedEventArgs args)
+    {
+        foreach(var tile in _rectObj)
+        {
+            tile.ColorInHexa = 0xFFFFFFFF;
         }
+        DisplayMap();
     }
     private void ChangeParamaterOfRectangle(object? sender, PointerEventArgs e)
     {
