@@ -13,16 +13,16 @@ public partial class MainWindow : Window
     private RectangleObject[,] _rectObj;
     private RectangleService _service = new RectangleService();
     private ServiceDisplayTheView _display = new ServiceDisplayTheView();
-    private ImageColoring ic = new ImageColoring();
-    DispatcherTimer dt = new DispatcherTimer();
+    private ImageColoring _ic = new ImageColoring();
+    private DispatcherTimer _dt = new DispatcherTimer();
 
     public MainWindow()
     {
         InitializeComponent();
         InitializeGame();
-        dt.Tick += Run;
-        dt.IsEnabled = true;
-        dt.Interval = new TimeSpan(0, 0, 0, 0, 500);   
+        _dt.Tick += Run;
+        _dt.IsEnabled = true;
+        _dt.Interval = new TimeSpan(0, 0, 0, 0, 200);   
     }
 
     private void Run(object? sender, EventArgs e)
@@ -30,24 +30,33 @@ public partial class MainWindow : Window
         int rows = _rectObj.GetLength(0);
         int cols = _rectObj.GetLength(1);
         RectangleObject[,] newRectObj = new RectangleObject[cols, rows];
-
-        for (int i = 0; i < cols; i++)
+        if ((DateTime.Now - Consts.DateOfLastClick).Seconds >=2)
         {
-            for (int j = 0; j < rows; j++)
+            for (int i = 0; i < cols; i++)
             {
-                int liveNeighbors = CountLiveNeighbors(i, j, rows, cols);
-
-                newRectObj[j, i] = new RectangleObject
+                for (int j = 0; j < rows; j++)
                 {
-                    Position = _rectObj[j, i].Position,
-                    Size = _rectObj[j, i].Size,
-                    ColorInHexa = DetermineNextState(_rectObj[j, i].ColorInHexa, liveNeighbors)
-                };
-            }
-        }
+                    if (_rectObj[j, i].ColorInHexa == 0xFFFFFFFF || _rectObj[j, i].ColorInHexa == 0xFF0000FF)
+                    {
+                        int liveNeighbors = CountLiveNeighbors(i, j, rows, cols);
 
-        _rectObj = newRectObj;
-        DisplayMap();
+                        newRectObj[j, i] = new RectangleObject
+                        {
+                            Position = _rectObj[j, i].Position,
+                            Size = _rectObj[j, i].Size,
+                            ColorInHexa = DetermineNextState(_rectObj[j, i].ColorInHexa, liveNeighbors)
+                        };
+                    }
+                    else
+                    {
+                        newRectObj[j, i] = _rectObj[j, i];
+                    }
+                }
+            }
+
+            _rectObj = newRectObj;
+            DisplayMap();
+        }
     }
 
     private int CountLiveNeighbors(int x, int y, int rows, int cols)
@@ -60,7 +69,7 @@ public partial class MainWindow : Window
             {
                 if (IsInBounds(ii, jj, rows, cols) && !(ii == x && jj == y))
                 {
-                    if (_rectObj[jj, ii].ColorInHexa != 0xFFFFFFFF)
+                    if (_rectObj[jj, ii].ColorInHexa == 0xFF0000FF || _rectObj[jj, ii].ColorInHexa == 0xFFFF0000)
                     {
                         liveNeighbors++;
                     }
@@ -78,11 +87,11 @@ public partial class MainWindow : Window
 
     private uint DetermineNextState(uint currentColor, int liveNeighbors)
     {
-        if (currentColor != 0xFFFFFFFF)
+        if (currentColor == 0xFF0000FF)
         {
             if (liveNeighbors == 2 || liveNeighbors == 3)
             {
-                return 0xFFAAAAAA;
+                return 0xFF0000FF;
             }
             else
             {
@@ -93,7 +102,7 @@ public partial class MainWindow : Window
         {
             if (liveNeighbors == 3)
             {
-                return 0xFFAAAAAA;
+                return 0xFF0000FF;
             }
             else
             {
@@ -114,18 +123,19 @@ public partial class MainWindow : Window
     private void ColorTheImages()
     {
 
-        ic.ColorTheImage(BlueColor, 0xFF0000FF);
-        ic.ColorTheImage(RedColor, 0xFFFF0000);
-        ic.ColorTheImage(GreenColor, 0xFF00FF00);
-        ic.ColorTheImage(BlackColor, 0xFF000000);
-        ic.ColorTheImage(WhiteColor, 0xFFFFFFFF);
-        ic.ColorTheImage(PurpleColor, 0xFFA020F0);
-        ic.ColorTheImage(BrownColor, 0xFFA52A2A);
+        _ic.ColorTheImage(BlueColor, 0xFF0000FF);
+        _ic.ColorTheImage(RedColor, 0xFFFF0000);
+        _ic.ColorTheImage(GreenColor, 0xFF008000);
+        _ic.ColorTheImage(BlackColor, 0xFF000000);
+        _ic.ColorTheImage(WhiteColor, 0xFFFFFFFF);
+        _ic.ColorTheImage(PurpleColor, 0xFFA020F0);
+        _ic.ColorTheImage(BrownColor, 0xFFA52A2A);
     }
 
     private void AddMethodsToPointerPressedEvent()
     {
         MyImage.PointerPressed += ChangeParamaterOfRectangle;
+        MyImage.PointerPressed += SaveTimeToConsts;
         BlueColor.PointerPressed += ChangeColorsEventHandlers.changeColorOfClickingBlue;
         RedColor.PointerPressed += ChangeColorsEventHandlers.changeColorOfCLickingRed;
         GreenColor.PointerPressed += ChangeColorsEventHandlers.changeColorOfCLickingGreen;
@@ -135,23 +145,18 @@ public partial class MainWindow : Window
         BrownColor.PointerPressed += ChangeColorsEventHandlers.changeColorOfCLickingBrown;
     }
 
-    private void ChangeStateOfTheGame(object sender, RoutedEventArgs args)
+    private void SaveTimeToConsts(object? sender, PointerPressedEventArgs e)
     {
-        
-        var obj = sender as Button;
-        if(Consts.StateOfTheGame == StateOfTheGame.Normal)
-        {
-            Consts.StateOfTheGame = StateOfTheGame.Freezed;
-            obj.Content = "Start the game!";
-            dt.Stop();
-        }
-        else
-        {
-            Consts.StateOfTheGame = StateOfTheGame.Normal;
-            obj.Content = "Stop the game!";
-            dt.Start();
+        Consts.DateOfLastClick = DateTime.Now;
+    }
 
+    private void ClearMap(object sender, RoutedEventArgs args)
+    {
+        foreach(var tile in _rectObj)
+        {
+            tile.ColorInHexa = 0xFFFFFFFF;
         }
+        DisplayMap();
     }
     private void ChangeParamaterOfRectangle(object? sender, PointerEventArgs e)
     {

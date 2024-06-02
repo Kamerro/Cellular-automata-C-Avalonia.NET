@@ -27,7 +27,7 @@ namespace CoolGITs.Views
 
         public static void changeColorOfCLickingGreen(object? sender, PointerPressedEventArgs e)
         {
-            Consts.ColorOfClicks = 0xFF00FF00;
+            Consts.ColorOfClicks = 0xFF008000;
         }
 
         public static void changeColorOfCLickingRed(object? sender, PointerPressedEventArgs e)
