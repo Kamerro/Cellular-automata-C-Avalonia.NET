@@ -13,16 +13,16 @@ public partial class MainWindow : Window
     private RectangleObject[,] _rectObj;
     private RectangleService _service = new RectangleService();
     private ServiceDisplayTheView _display = new ServiceDisplayTheView();
-    private ImageColoring ic = new ImageColoring();
-    DispatcherTimer dt = new DispatcherTimer();
+    private ImageColoring _ic = new ImageColoring();
+    private DispatcherTimer _dt = new DispatcherTimer();
 
     public MainWindow()
     {
         InitializeComponent();
         InitializeGame();
-        dt.Tick += Run;
-        dt.IsEnabled = true;
-        dt.Interval = new TimeSpan(0, 0, 0, 0, 500);   
+        _dt.Tick += Run;
+        _dt.IsEnabled = true;
+        _dt.Interval = new TimeSpan(0, 0, 0, 0, 200);   
     }
 
     private void Run(object? sender, EventArgs e)
@@ -78,11 +78,11 @@ public partial class MainWindow : Window
 
     private uint DetermineNextState(uint currentColor, int liveNeighbors)
     {
-        if (currentColor != 0xFFFFFFFF)
+        if (currentColor == 0xFF0000FF)
         {
             if (liveNeighbors == 2 || liveNeighbors == 3)
             {
-                return 0xFFAAAAAA;
+                return 0xFF0000FF;
             }
             else
             {
@@ -93,7 +93,7 @@ public partial class MainWindow : Window
         {
             if (liveNeighbors == 3)
             {
-                return 0xFFAAAAAA;
+                return 0xFF0000FF;
             }
             else
             {
@@ -114,13 +114,13 @@ public partial class MainWindow : Window
     private void ColorTheImages()
     {
 
-        ic.ColorTheImage(BlueColor, 0xFF0000FF);
-        ic.ColorTheImage(RedColor, 0xFFFF0000);
-        ic.ColorTheImage(GreenColor, 0xFF00FF00);
-        ic.ColorTheImage(BlackColor, 0xFF000000);
-        ic.ColorTheImage(WhiteColor, 0xFFFFFFFF);
-        ic.ColorTheImage(PurpleColor, 0xFFA020F0);
-        ic.ColorTheImage(BrownColor, 0xFFA52A2A);
+        _ic.ColorTheImage(BlueColor, 0xFF0000FF);
+        _ic.ColorTheImage(RedColor, 0xFFFF0000);
+        _ic.ColorTheImage(GreenColor, 0xFF00FF00);
+        _ic.ColorTheImage(BlackColor, 0xFF000000);
+        _ic.ColorTheImage(WhiteColor, 0xFFFFFFFF);
+        _ic.ColorTheImage(PurpleColor, 0xFFA020F0);
+        _ic.ColorTheImage(BrownColor, 0xFFA52A2A);
     }
 
     private void AddMethodsToPointerPressedEvent()
@@ -143,13 +143,13 @@ public partial class MainWindow : Window
         {
             Consts.StateOfTheGame = StateOfTheGame.Freezed;
             obj.Content = "Start the game!";
-            dt.Stop();
+            _dt.Stop();
         }
         else
         {
             Consts.StateOfTheGame = StateOfTheGame.Normal;
             obj.Content = "Stop the game!";
-            dt.Start();
+            _dt.Start();
 
         }
     }

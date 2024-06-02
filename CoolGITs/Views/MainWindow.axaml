@@ -8,20 +8,90 @@
         x:Class="CoolGITs.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="CoolGITs">
+
+
+
+	<Window.Styles>
+		<Style Selector="CheckBox:checked">
+			<Setter Property="FontWeight" Value="Bold" />
+		</Style>
+		<Style Selector="Button.red:focus">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="BorderBrush" Value="DarkRed"/>
+			<Setter Property="BorderThickness" Value="2"/>
+		</Style>
+		<Style Selector="Border.Images">
+			<Setter Property="BorderThickness" Value="5"/>
+			<Setter Property="CornerRadius" Value="2"/>
+			<Setter Property="ClipToBounds" Value="True"/>
+		</Style>
+		<Style Selector="Image.TypeOfTheCells">
+			<Setter Property="Width" Value="60"/>
+			<Setter Property="Height" Value="60"/>
+		</Style>
+		<!--<Style Selector="Grid.ColorPalette">
+			<Setter Property="ColumnDefinitions" Value="60*,60*,60*,60*,60*,60*,60*"/>
+			<Setter Property="HorizontalAlignment" Value="Center"/>
+			<Setter Property="RowDefinitions" Value="Auto"/>
+		</Style>-->
+	</Window.Styles>
+
 	<StackPanel>
-		<Grid ColumnDefinitions="60*,60*,60*,60*,60*,60*,60*" HorizontalAlignment="Center" Grid.Row="0"  RowDefinitions="Auto"  Margin="4">
-			<Border  Width="60" Height="60" Grid.Column="0"/>
-			<Image Name="BlueColor" Width="60" Height="60" Grid.Column="0"/>
-			<Image Name="RedColor" Width="60" Height="60" Grid.Column="1"/>
-			<Image Name="GreenColor" Width="60" Height="60" Grid.Column="2"/>
-			<Image Name="BlackColor" Width="60" Height="60" Grid.Column="3"/>
-			<Image Name="WhiteColor" Width="60" Height="60" Grid.Column="4"/>
-			<Image Name="PurpleColor" Width="60" Height="60" Grid.Column="5"/>
-			<Image Name="BrownColor"  Width="60" Height="60" Grid.Column="6"/>
+		<Grid Background="Transparent" ColumnDefinitions="60*,60*,60*,60*,60*,60*,60*" HorizontalAlignment="Center" RowDefinitions="Auto"  Margin="4">
+
+			<Border Classes ="Images"
+						BorderBrush="Aqua"
+						Grid.Column="0">
+				<Image Name="BlueColor" Classes="TypeOfTheCells"  ToolTip.Tip="Click to choose basic behavior"/>
+			</Border>
+
+			<Border Classes ="Images"
+						Grid.Column="1"
+						Background="Orange">
+				<Image Name="RedColor"  Classes="TypeOfTheCells" ToolTip.Tip="Click to choose forever alive cell"/>
+			</Border>
+
+			<Border Classes ="Images"
+						BorderBrush="Green"
+						Grid.Column="2">
+				<Image Name="GreenColor"  Classes="TypeOfTheCells"/>
+			</Border>
+
+			<Border Classes="Images"
+						BorderBrush="White"
+						Grid.Column="3">
+				<Image Name="BlackColor"  Classes="TypeOfTheCells"/>
+			</Border>
+
+			<Border Classes="Images"
+						BorderBrush="Black"
+						Grid.Column="4">
+				<Image Name="WhiteColor"  Classes="TypeOfTheCells"/>
+			</Border>
+
+			<Border Classes="Images"
+						BorderBrush="Purple"
+						Grid.Column="5">
+				<Image Name="PurpleColor"  Classes="TypeOfTheCells"/>
+			</Border>
+
+			<Border Classes ="Images"
+						BorderBrush="Red"
+						Grid.Column="6">
+				<Image Name="BrownColor"   Classes="TypeOfTheCells"/>
+			</Border>
 		</Grid>
-		<Grid ColumnDefinitions="1*,1*,400,1*,1*" RowDefinitions="Auto,Auto,Auto"  Margin="4">
+		
+		<Grid ColumnDefinitions="1*,1*,Auto,1*,1*" RowDefinitions="Auto,Auto,Auto">
+			<Border Classes="Images"
+						BorderBrush="Green"
+						Grid.Row="2" Grid.Column="2">
+				<Image Name="MyImage" Width="400" Height="400"/>
+			</Border>
+
 			<Button Click="ChangeStateOfTheGame" Content="Stop the game!" HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="2"/>
-			<Image Name="MyImage" Width="400" Height="400" Grid.Row="2" Grid.Column="2"/>
 		</Grid>
+		
 	</StackPanel>
 </Window>
